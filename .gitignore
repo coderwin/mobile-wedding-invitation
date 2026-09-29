@@ -32,6 +32,8 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+# 키 발급 방법만 적힌 안내 파일이라 저장소에 포함합니다.
+!.env.example
 
 # vercel
 .vercel

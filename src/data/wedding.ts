@@ -1,48 +1,33 @@
+import { accounts, contacts } from './contacts';
+import type { Parent } from './types';
+
 /**
- * 청첩장에 들어가는 모든 내용은 이 파일에서만 관리합니다.
- * 실제 정보로 바꿀 때 다른 파일은 건드리지 않아도 됩니다.
+ * 청첩장에 들어가는 내용은 이 파일에서 관리합니다.
+ * 실제 정보로 바꿀 때 컴포넌트는 건드리지 않아도 됩니다.
+ *
+ * 단, 전화번호와 계좌번호는 공개 저장소에 올라가지 않도록
+ * 환경 변수로 분리했습니다. (src/data/contacts.ts 참고)
  *
  * 현재 값은 모두 샘플입니다.
  */
-
-export type Person = {
-  name: string;
-  phone: string;
-};
-
-export type Parent = Person & {
-  /** 고인인 경우 이름 앞에 故 를 붙입니다. */
-  deceased?: boolean;
-};
-
-export type Account = {
-  bank: string;
-  number: string;
-  holder: string;
-  /** 관계 표기 (예: 신랑, 아버지) */
-  label: string;
-  /** 카카오페이 송금 링크 (없으면 생략) */
-  kakaopayUrl?: string;
-};
-
 export const wedding = {
   groom: {
     name: '이준서',
     firstName: '준서',
-    phone: '010-1234-5678',
+    phone: contacts.groom,
     /** 장남 / 차남 / 아들 등 */
     order: '장남',
-    father: { name: '이영호', phone: '010-1234-1111' } as Parent,
-    mother: { name: '최미경', phone: '010-1234-2222' } as Parent,
+    father: { name: '이영호', phone: contacts.groomFather } as Parent,
+    mother: { name: '최미경', phone: contacts.groomMother } as Parent,
   },
 
   bride: {
     name: '박지은',
     firstName: '지은',
-    phone: '010-8765-4321',
+    phone: contacts.bride,
     order: '차녀',
-    father: { name: '박성우', phone: '010-8765-1111' } as Parent,
-    mother: { name: '한소영', phone: '010-8765-2222' } as Parent,
+    father: { name: '박성우', phone: contacts.brideFather } as Parent,
+    mother: { name: '한소영', phone: contacts.brideMother } as Parent,
   },
 
   /** 예식 일시 (24시간제) */
@@ -58,7 +43,7 @@ export const wedding = {
     name: '그레이스 컨벤션',
     hall: '3층 그랜드홀',
     address: '서울 강남구 테헤란로 123',
-    tel: '02-1234-5678',
+    tel: contacts.venue,
     /** 카카오맵에서 확인한 좌표 */
     lat: 37.5006,
     lng: 127.0366,
@@ -107,16 +92,8 @@ export const wedding = {
     ],
   },
 
-  accounts: {
-    groom: [
-      { label: '신랑', bank: '국민은행', number: '123456-01-234567', holder: '이준서' },
-      { label: '아버지', bank: '신한은행', number: '110-234-567890', holder: '이영호' },
-    ] as Account[],
-    bride: [
-      { label: '신부', bank: '카카오뱅크', number: '3333-01-2345678', holder: '박지은' },
-      { label: '어머니', bank: '우리은행', number: '1002-345-678901', holder: '한소영' },
-    ] as Account[],
-  },
+  /** 마음 전하실 곳. 실제 값은 환경 변수에서 옵니다. */
+  accounts,
 
   /** 카카오톡·문자로 공유될 때 보이는 내용 */
   share: {
@@ -141,3 +118,4 @@ export const wedding = {
 } as const;
 
 export type Wedding = typeof wedding;
+export type { Account, Accounts, Contacts, Parent, Person } from './types';
